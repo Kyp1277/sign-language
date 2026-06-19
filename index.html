@@ -79,18 +79,19 @@
             <section class="results-section">
                 <!-- API Settings Card -->
                 <div class="settings-card card">
-                    <div class="settings-header" id="settingsHeader">
-                        <h3><i class="fa-solid fa-gears"></i> Konfigurasi API Backend</h3>
-                        <i class="fa-solid fa-chevron-down toggle-arrow" id="settingsArrow"></i>
+                    <div class="card-header">
+                        <h2><i class="fa-solid fa-gears"></i> Konfigurasi API Backend</h2>
+                        <span class="connection-status" id="connectionStatus"><i class="fa-solid fa-circle-question"></i> Belum Dites</span>
                     </div>
-                    <div class="settings-body" id="settingsBody">
+                    <div class="settings-body-visible">
                         <div class="form-group">
                             <label for="apiEndpoint"><i class="fa-solid fa-link"></i> Endpoint URL Hugging Face Spaces</label>
                             <div class="input-group">
                                 <input type="text" id="apiEndpoint" value="https://naufal312-sign-language-mnist-api.hf.space/predict" placeholder="Masukkan URL API Spaces Anda">
                                 <button id="btnSaveSettings" class="btn btn-secondary">Simpan</button>
+                                <button id="btnTestConnection" class="btn btn-primary"><i class="fa-solid fa-wifi"></i> Tes</button>
                             </div>
-                            <small class="help-text">Default menggunakan Hugging Face Space API Anda.</small>
+                            <small class="help-text">Gunakan URL Hugging Face Space API Anda (akhiri dengan /predict).</small>
                         </div>
                     </div>
                 </div>

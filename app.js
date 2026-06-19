@@ -20,11 +20,10 @@ const autoDetectToggle = document.getElementById("autoDetectToggle");
 const cameraStatus = document.getElementById("cameraStatus");
 
 // API Settings
-const settingsHeader = document.getElementById("settingsHeader");
-const settingsArrow = document.getElementById("settingsArrow");
-const settingsBody = document.getElementById("settingsBody");
 const apiEndpointInput = document.getElementById("apiEndpoint");
 const btnSaveSettings = document.getElementById("btnSaveSettings");
+const btnTestConnection = document.getElementById("btnTestConnection");
+const connectionStatus = document.getElementById("connectionStatus");
 
 // Results Display
 const predictedChar = document.getElementById("predictedChar");
@@ -42,12 +41,6 @@ apiEndpointInput.value = apiEndpoint;
 
 // --- Event Listeners ---
 
-// Settings Toggle Panel
-settingsHeader.addEventListener("click", () => {
-    settingsBody.classList.toggle("show");
-    settingsArrow.classList.toggle("rotated");
-});
-
 // Save Settings
 btnSaveSettings.addEventListener("click", () => {
     const url = apiEndpointInput.value.trim();
@@ -55,12 +48,48 @@ btnSaveSettings.addEventListener("click", () => {
         apiEndpoint = url;
         localStorage.setItem("sign_lang_api_endpoint", url);
         alert("Endpoint API berhasil disimpan!");
-        settingsBody.classList.remove("show");
-        settingsArrow.classList.remove("rotated");
+        testConnection();
     } else {
         alert("Endpoint URL tidak boleh kosong!");
     }
 });
+
+// Test Connection Function
+async function testConnection() {
+    const endpoint = apiEndpointInput.value.trim();
+    if (!endpoint) return;
+    
+    // Determine the health check URL (e.g. replace '/predict' with '/health')
+    const healthUrl = endpoint.includes("/predict") 
+        ? endpoint.replace("/predict", "/health") 
+        : endpoint + "/health";
+        
+    connectionStatus.className = "connection-status testing";
+    connectionStatus.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Menghubungkan...';
+    btnTestConnection.disabled = true;
+
+    try {
+        const response = await fetch(healthUrl, { method: "GET" });
+        if (response.ok) {
+            connectionStatus.className = "connection-status connected";
+            connectionStatus.innerHTML = '<i class="fa-solid fa-circle-check"></i> Connected';
+        } else {
+            throw new Error("HTTP error " + response.status);
+        }
+    } catch (err) {
+        console.error("Connection test failed:", err);
+        connectionStatus.className = "connection-status failed";
+        connectionStatus.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Offline';
+    } finally {
+        btnTestConnection.disabled = false;
+    }
+}
+
+// Bind Test Connection Button
+btnTestConnection.addEventListener("click", testConnection);
+
+// Test connection automatically on page load
+testConnection();
 
 // Start Camera
 btnStartCamera.addEventListener("click", startCamera);

@@ -4,7 +4,7 @@ let autoDetectInterval = null;
 let isDetecting = false;
 let isTTSEnabled = false;
 let lastDetectedChar = "";
-let apiEndpoint = localStorage.getItem("sign_lang_api_endpoint") || "https://kypli-sign-language-mnist-api.hf.space/predict";
+let apiEndpoint = localStorage.getItem("sign_lang_api_endpoint") || "https://naufal312-sign-language-mnist-api.hf.space/predict";
 
 const webcam = document.getElementById("webcam");
 const roiBox = document.getElementById("roiBox");
